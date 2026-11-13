@@ -12,25 +12,18 @@ const menus: Record<MenuKey, {
     description:
       "Explore the materials that shape research, teaching, and new ideas.",
     links: [
-      "Search Tools",
-      "Library Catalog",
       "Digital Collections",
       "Databases",
-      "Archives",
       "Research Guides",
-      "Featured Collections",
     ],
   },
   visit: {
     label: "Visit",
     description: "Find your place to read, study, research, or collaborate.",
     links: [
-      "Library Hours",
-      "Locations & Directions",
-      "Study Spaces",
-      "Book a Study Room",
-      "Accessibility",
-      "Visitor Information",
+      "Vising the Library",
+      "Locations & Hours",
+      "Events & Workshops",
     ],
   },
   services: {
@@ -42,8 +35,8 @@ const menus: Record<MenuKey, {
       "Research Support",
       "Ask a Librarian",
       "Research Consultations",
-      "Interlibrary Loan",
       "Citation Support",
+      "Alumni access",
     ],
   },
   about: {
@@ -54,7 +47,7 @@ const menus: Record<MenuKey, {
       "Library Overview",
       "Library Staff",
       "News & Updates",
-      "Events",
+      "Grant and Funding",
       "Contact Us",
     ],
   },
@@ -479,7 +472,7 @@ export default function App() {
         <section className="page-width discovery">
           <p className="kicker">01 · Access every question</p>
           <h1>
-            Discover Knowledge. Explore
+            Knowledge . Explore
             <br />
             Possibility.
           </h1>
