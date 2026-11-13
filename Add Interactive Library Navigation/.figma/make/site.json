@@ -1,0 +1,10 @@
+{
+  "description": "A university digital library portal that helps students, researchers, and visitors find collections, library services, locations, and research support.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
