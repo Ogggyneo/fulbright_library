@@ -1,8 +1,8 @@
 
 .collections-page {
-  --cp-ink: #172b2b;
+  --cp-ink: rgb(23, 43, 43);
   --cp-accent: #b74b37;
-  --cp-line: #deded8;
+  --cp-line: #ceefe5;
   color: var(--cp-ink);
   background: #fff;
   font-family: inherit;

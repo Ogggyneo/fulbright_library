@@ -1,6 +1,6 @@
 
 import { useMemo, useState } from "react";
-import "./CollectionsPage.css";
+import "../style/CollectionsPage.css";
 
 type Category =
   | "All"

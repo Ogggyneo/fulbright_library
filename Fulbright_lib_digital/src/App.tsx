@@ -477,7 +477,7 @@ export default function App() {
                 <div>
                   {/* NEW: Mobile link to Collections page */}
                   {key === "collections" && (
-                    <a href="/collections">All Collections</a>
+                    <a href="/collections">Digital Collection</a>
                   )}
                   {menus[key].links.map((link) => (
                     <a
