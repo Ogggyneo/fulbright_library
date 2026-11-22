@@ -1,7 +1,7 @@
 
 .collections-page {
   --cp-ink: rgb(23, 43, 43);
-  --cp-accent: #b74b37;
+  --cp-accent: #242b86;
   --cp-line: #ceefe5;
   color: var(--cp-ink);
   background: #fff;
@@ -16,7 +16,7 @@
 }
 
 .cp-hero {
-  background: #f3f1ea;
+  background: #ceefe5;
   padding: 28px 0 100px;
 }
 
@@ -477,4 +477,67 @@
   .cp-hero p {
     font-size: 17px;
   }
+    /* Discovery cards */
+    .collections-page .cp-entry {
+    box-shadow: none;
+    transition:
+        transform 0.3s ease,
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+    }
+
+    .collections-page .cp-entry:hover {
+    transform: translateY(-6px);
+    background-color: #ceefe5;
+    border-color: #242b86;
+    box-shadow: none;
+    }
+
+    /* Collection cards */
+    .collections-page .cp-card {
+    box-shadow: none;
+    transition:
+        transform 0.3s ease,
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+    }
+
+    .collections-page .cp-card:hover {
+    transform: translateY(-6px);
+    background-color: #f2fffb;
+    border-color: #242b86;
+    box-shadow: none;
+    }
+
+    /* Collection images */
+    .collections-page .cp-card:hover .cp-image img {
+    transform: scale(1.06);
+    }
+
+    /* Featured image */
+    .collections-page .cp-feature img,
+    .collections-page .cp-feature img:hover {
+    box-shadow: none;
+    }
+
+    /* Buttons */
+    .collections-page .cp-primary,
+    .collections-page .cp-primary:hover,
+    .collections-page .cp-bottom a,
+    .collections-page .cp-bottom a:hover {
+    box-shadow: none;
+    }
+
+    /* Search */
+    .collections-page .cp-search,
+    .collections-page .cp-search:hover,
+    .collections-page .cp-search:focus-within {
+    box-shadow: none;
+    }
+
+    /* Remove shadows from other interactive elements */
+    .collections-page .cp-filters button,
+    .collections-page .cp-filters button:hover {
+    box-shadow: none;
+    }
 }

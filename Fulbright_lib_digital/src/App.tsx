@@ -1,24 +1,45 @@
 
+import { useEffect, useRef, useState } from "react";
+import type { FormEvent, ReactNode } from "react";
+
+// =====================================================
+// COLLECTIONS PAGE IMPORT
+// Your file is: src/page/CollectionPage.tsx
+// =====================================================
 import CollectionsPage from "./page/CollectionPage";
-import { FormEvent, useEffect, useRef, useState } from "react";
 
 type MenuKey = "collections" | "visit" | "services" | "about";
 
 const menus: Record<
   MenuKey,
-  { label: string; description: string; links: string[] }
+  {
+    label: string;
+    description: string;
+    links: string[];
+  }
 > = {
   collections: {
     label: "Collections",
     description:
       "Explore the materials that shape research, teaching, and new ideas.",
-    links: ["Digital Collections", "Databases", "Research Guides"],
+    links: [
+      "Digital Collections",
+      "Databases",
+      "Research Guides",
+    ],
   },
+
   visit: {
     label: "Visit",
-    description: "Find your place to read, study, research, or collaborate.",
-    links: ["Visiting the Library", "Locations & Hours", "Events & Workshops"],
+    description:
+      "Find your place to read, study, research, or collaborate.",
+    links: [
+      "Visiting the Library",
+      "Locations & Hours",
+      "Events & Workshops",
+    ],
   },
+
   services: {
     label: "Services",
     description:
@@ -32,6 +53,7 @@ const menus: Record<
       "Alumni access",
     ],
   },
+
   about: {
     label: "About",
     description:
@@ -52,8 +74,16 @@ const menuKeys = Object.keys(menus) as MenuKey[];
 const resources = [
   ["book", "Library Catalog", "Find books, journals, and media."],
   ["database", "Databases", "Explore subject-specific sources."],
-  ["collection", "Digital Collections", "Discover materials from anywhere."],
-  ["compass", "Research Guides", "Start with expert-curated resources."],
+  [
+    "collection",
+    "Digital Collections",
+    "Discover materials from anywhere.",
+  ],
+  [
+    "compass",
+    "Research Guides",
+    "Start with expert-curated resources.",
+  ],
   ["archive", "Archives", "Connect with original sources."],
   ["chat", "Research Support", "Move your research forward."],
 ];
@@ -82,6 +112,10 @@ const collectionCards = [
   },
 ];
 
+// =====================================================
+// ICON COMPONENTS
+// =====================================================
+
 function Chevron({ open = false }: { open?: boolean }) {
   return (
     <svg
@@ -96,7 +130,11 @@ function Chevron({ open = false }: { open?: boolean }) {
 
 function SearchIcon() {
   return (
-    <svg aria-hidden="true" className="icon" viewBox="0 0 24 24">
+    <svg
+      aria-hidden="true"
+      className="icon"
+      viewBox="0 0 24 24"
+    >
       <circle cx="10.5" cy="10.5" r="6.5" />
       <path d="m15.5 15.5 5 5" />
     </svg>
@@ -105,84 +143,173 @@ function SearchIcon() {
 
 function Arrow() {
   return (
-    <svg aria-hidden="true" className="arrow" viewBox="0 0 20 20">
+    <svg
+      aria-hidden="true"
+      className="arrow"
+      viewBox="0 0 20 20"
+    >
       <path d="M3 10h13M12 6l4 4-4 4" />
     </svg>
   );
 }
 
 function ResourceIcon({ type }: { type: string }) {
-  const paths: Record<string, React.ReactNode> = {
+  const paths: Record<string, ReactNode> = {
     book: (
       <path d="M3 5.5c3-1 5-.2 6 1v10c-1-1.2-3-2-6-1V5.5Zm12 0c-3-1-5-.2-6 1v10c1-1.2 3-2 6-1V5.5Z" />
     ),
+
     database: (
       <>
         <ellipse cx="9" cy="5" rx="5.5" ry="2.5" />
         <path d="M3.5 5v8c0 1.4 2.5 2.5 5.5 2.5s5.5-1.1 5.5-2.5V5M3.5 9c0 1.4 2.5 2.5 5.5 2.5s5.5-1.1 5.5-2.5" />
       </>
     ),
-    collection: <path d="M6 6V3h9v9h-3M3 6h9v9H3zM8 9h1m-3 3h3" />,
+
+    collection: (
+      <path d="M6 6V3h9v9h-3M3 6h9v9H3zM8 9h1m-3 3h3" />
+    ),
+
     compass: (
       <>
         <circle cx="9" cy="9" r="6" />
         <path d="m11.5 6.5-1.3 3.7-3.7 1.3 1.3-3.7 3.7-1.3Z" />
       </>
     ),
-    archive: <path d="M3 5h12M4 5l1 10h8l1-10M2.5 2.5h13v3h-13zM7 9h4" />,
-    chat: <path d="M3 3.5h12v8H8l-4 3v-3H3z" />,
+
+    archive: (
+      <path d="M3 5h12M4 5l1 10h8l1-10M2.5 2.5h13v3h-13zM7 9h4" />
+    ),
+
+    chat: (
+      <path d="M3 3.5h12v8H8l-4 3v-3H3z" />
+    ),
   };
 
   return (
-    <svg aria-hidden="true" className="resource-icon" viewBox="0 0 18 18">
+    <svg
+      aria-hidden="true"
+      className="resource-icon"
+      viewBox="0 0 18 18"
+    >
       {paths[type]}
     </svg>
   );
 }
 
+// =====================================================
+// MAIN APPLICATION
+// =====================================================
+
 export default function App() {
-  const [activeMenu, setActiveMenu] = useState<MenuKey | null>(null);
+  const [activeMenu, setActiveMenu] =
+    useState<MenuKey | null>(null);
+
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileSection, setMobileSection] = useState<MenuKey | null>(null);
+
+  const [mobileSection, setMobileSection] =
+    useState<MenuKey | null>(null);
+
   const [query, setQuery] = useState("");
   const [result, setResult] = useState("");
-  const [comingSoon, setComingSoon] = useState<string | null>(null);
+
+  const [comingSoon, setComingSoon] =
+    useState<string | null>(null);
 
   const headerRef = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const dialogCloseRef = useRef<HTMLButtonElement>(null);
 
   // =====================================================
-  // NEW: Track which page is currently being displayed.
-  // "/" = homepage
-  // "/collections" = Collections page
+  // PAGE ROUTING
+  //
+  // "/"            = Homepage
+  // "/collections" = Digital Collections page
   // =====================================================
-  const [pathname, setPathname] = useState(window.location.pathname);
+
+  const [pathname, setPathname] = useState(
+    window.location.pathname
+  );
 
   useEffect(() => {
-    const onPopState = () => setPathname(window.location.pathname);
+    const onPopState = () => {
+      setPathname(window.location.pathname);
+      setActiveMenu(null);
+      setMobileOpen(false);
+    };
+
     window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
+
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+    };
   }, []);
 
-  // NEW: Navigate without reloading the website.
+  // =====================================================
+  // NAVIGATION FUNCTION
+  // =====================================================
+
   const navigate = (path: string) => {
     if (window.location.pathname !== path) {
       window.history.pushState({}, "", path);
     }
 
     setPathname(path);
+
+    // Close menus after navigating
     setActiveMenu(null);
     setSearchOpen(false);
     setMobileOpen(false);
+    setMobileSection(null);
     setComingSoon(null);
+
     window.scrollTo(0, 0);
   };
 
+  // =====================================================
+  // DROPDOWN FUNCTION
+  //
+  // Click Collections -> opens dropdown
+  // Click again -> closes dropdown
+  // Other menu buttons behave the same way
+  // =====================================================
+
+  const toggleMenu = (key: MenuKey) => {
+    setSearchOpen(false);
+
+    setActiveMenu((current) =>
+      current === key ? null : key
+    );
+  };
+
+  // =====================================================
+  // HANDLE DROPDOWN LINKS
+  //
+  // Digital Collections -> /collections
+  // Other links -> existing Coming Soon behavior
+  // =====================================================
+
+  const getMenuLink = (key: MenuKey, link: string) => {
+    if (
+      key === "collections" &&
+      link === "Digital Collections"
+    ) {
+      return "/collections";
+    }
+
+    return `#${link.toLowerCase().replaceAll(" ", "-")}`;
+  };
+
+  // =====================================================
+  // CLOSE MENUS WHEN CLICKING OUTSIDE OR PRESSING ESCAPE
+  // =====================================================
+
   useEffect(() => {
     const closeOutside = (event: PointerEvent) => {
-      if (!headerRef.current?.contains(event.target as Node)) {
+      if (
+        !headerRef.current?.contains(event.target as Node)
+      ) {
         setActiveMenu(null);
         setSearchOpen(false);
         setMobileOpen(false);
@@ -198,94 +325,174 @@ export default function App() {
       }
     };
 
-    document.addEventListener("pointerdown", closeOutside);
-    document.addEventListener("keydown", closeEscape);
+    document.addEventListener(
+      "pointerdown",
+      closeOutside
+    );
+
+    document.addEventListener(
+      "keydown",
+      closeEscape
+    );
 
     return () => {
-      document.removeEventListener("pointerdown", closeOutside);
-      document.removeEventListener("keydown", closeEscape);
+      document.removeEventListener(
+        "pointerdown",
+        closeOutside
+      );
+
+      document.removeEventListener(
+        "keydown",
+        closeEscape
+      );
     };
   }, []);
 
   useEffect(() => {
-    if (searchOpen) window.setTimeout(() => searchRef.current?.focus(), 310);
+    if (searchOpen) {
+      window.setTimeout(() => {
+        searchRef.current?.focus();
+      }, 310);
+    }
   }, [searchOpen]);
 
   useEffect(() => {
     if (comingSoon) {
-      window.setTimeout(() => dialogCloseRef.current?.focus(), 50);
+      window.setTimeout(() => {
+        dialogCloseRef.current?.focus();
+      }, 50);
     }
   }, [comingSoon]);
 
   const submitSearch = (event: FormEvent) => {
     event.preventDefault();
-    if (query.trim()) setResult(query.trim());
-  };
 
-  const toggleMenu = (key: MenuKey) => {
-    setSearchOpen(false);
-    setActiveMenu((current) => (current === key ? null : key));
+    if (query.trim()) {
+      setResult(query.trim());
+    }
   };
 
   return (
     <div
       className="site-shell"
-      // NEW: Allow real page navigation while keeping
-      // the Coming Soon popup for unfinished links.
+
+      // =================================================
+      // LINK HANDLING
+      //
+      // IMPORTANT:
+      // Allow real links such as /collections.
+      // Do NOT show Coming Soon for Digital Collections.
+      // =================================================
+
       onClickCapture={(event) => {
-        const link = (event.target as HTMLElement).closest("a");
-        if (!link || link.classList.contains("skip-link")) return;
+        const link = (
+          event.target as HTMLElement
+        ).closest("a");
+
+        if (!link) return;
+
+        if (link.classList.contains("skip-link")) {
+          return;
+        }
 
         const href = link.getAttribute("href");
 
+        // Homepage logo and internal page navigation
         if (
           link.classList.contains("brand") ||
           href === "/" ||
           href === "/collections"
         ) {
           event.preventDefault();
-          navigate(href === "/collections" ? "/collections" : "/");
+
+          navigate(
+            href === "/collections"
+              ? "/collections"
+              : "/"
+          );
+
           return;
         }
 
+        // Allow working anchor links
         if (
-          pathname === "/collections" &&
           href?.startsWith("#") &&
+          href.length > 1 &&
           document.getElementById(href.slice(1))
         ) {
           return;
         }
 
-        if (href?.startsWith("#") && href !== "#main-content") {
+        // Allow external URLs, mailto links, etc.
+        if (!href?.startsWith("#")) {
+          return;
+        }
+
+        // Show Coming Soon only for placeholder links
+        if (href !== "#main-content") {
           event.preventDefault();
-          setComingSoon(link.textContent?.trim() || "This page");
+
+          setComingSoon(
+            link.textContent?.trim() || "This page"
+          );
+
           setActiveMenu(null);
           setSearchOpen(false);
           setMobileOpen(false);
         }
       }}
     >
-      {/* ================= HEADER ================= */}
-      <header className="site-header" ref={headerRef}>
-        <a className="skip-link" href="#main-content">
+      {/* ============================================= */}
+      {/* HEADER */}
+      {/* ============================================= */}
+
+      <header
+        className="site-header"
+        ref={headerRef}
+      >
+        <a
+          className="skip-link"
+          href="#main-content"
+        >
           Skip to main content
         </a>
+
+        {/* TOP STRIP */}
 
         <div className="top-strip">
           <div className="page-width top-strip__inner">
             <span>University Libraries</span>
+
             <div>
-              <a href="#hours">Library Hours</a>
-              <a href="#librarian">Ask a Librarian</a>
+              <a href="#hours">
+                Library Hours
+              </a>
+
+              <a href="#librarian">
+                Ask a Librarian
+              </a>
             </div>
           </div>
         </div>
 
+        {/* ========================================= */}
+        {/* MAIN NAVIGATION */}
+        {/* ========================================= */}
+
         <div className="nav-shell">
           <div className="page-width nav-inner">
-            {/* NEW: Logo returns to homepage */}
-            <a className="brand" href="/" aria-label="Fulbright Digital Library home">
-              <span className="brand-seal brand-seal--header" aria-hidden="true">
+
+            {/* LOGO -> HOMEPAGE */}
+
+            <a
+              className="brand"
+              href="/"
+              aria-label="Fulbright Digital Library home"
+            >
+              <span
+                className="brand-seal brand-seal--header"
+                aria-hidden="true"
+              >
                 <img
                   alt=""
                   className="header-brand-logo"
@@ -294,62 +501,100 @@ export default function App() {
                   width="72"
                 />
               </span>
+
               <span className="brand-copy">
-                <small>Fulbright University</small>
-                <strong>Digital Library</strong>
+                <small>
+                  Fulbright University
+                </small>
+
+                <strong>
+                  Digital Library
+                </strong>
               </span>
             </a>
 
-            <nav className="desktop-nav" aria-label="Main navigation">
+            {/* ===================================== */}
+            {/* DESKTOP NAVIGATION */}
+            {/* ===================================== */}
+
+            <nav
+              className="desktop-nav"
+              aria-label="Main navigation"
+            >
               {menuKeys.map((key) => (
                 <button
+                  key={key}
+                  type="button"
                   aria-controls={`mega-${key}`}
                   aria-expanded={activeMenu === key}
                   className={
                     activeMenu === key ||
-                    (key === "collections" && pathname === "/collections")
+                    (
+                      key === "collections" &&
+                      pathname === "/collections"
+                    )
                       ? "active"
                       : ""
                   }
-                  key={key}
-                  // NEW: Collections navigates to its page.
-                  onClick={() =>
-                    key === "collections"
-                      ? navigate("/collections")
-                      : toggleMenu(key)
-                  }
-                  type="button"
+
+                  // =================================
+                  // IMPORTANT CHANGE #1
+                  //
+                  // Collections opens its dropdown.
+                  // It does NOT navigate directly.
+                  // =================================
+
+                  onClick={() => toggleMenu(key)}
                 >
                   {menus[key].label}
-                  <Chevron open={activeMenu === key} />
+
+                  <Chevron
+                    open={activeMenu === key}
+                  />
                 </button>
               ))}
 
+              {/* SEARCH BUTTON */}
+
               <button
+                type="button"
                 aria-controls="search-panel"
                 aria-expanded={searchOpen}
                 aria-label="Open search"
-                className={`nav-search ${searchOpen ? "active" : ""}`}
+                className={`nav-search ${
+                  searchOpen ? "active" : ""
+                }`}
                 onClick={() => {
                   setActiveMenu(null);
-                  setSearchOpen((open) => !open);
+
+                  setSearchOpen(
+                    (open) => !open
+                  );
                 }}
-                type="button"
               >
                 <SearchIcon />
               </button>
             </nav>
 
+            {/* MOBILE HAMBURGER */}
+
             <button
+              type="button"
               aria-expanded={mobileOpen}
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-label={
+                mobileOpen
+                  ? "Close menu"
+                  : "Open menu"
+              }
               className="hamburger"
               onClick={() => {
                 setActiveMenu(null);
                 setSearchOpen(false);
-                setMobileOpen((open) => !open);
+
+                setMobileOpen(
+                  (open) => !open
+                );
               }}
-              type="button"
             >
               <span />
               <span />
@@ -358,33 +603,73 @@ export default function App() {
           </div>
         </div>
 
-        {/* EXISTING MEGA MENUS */}
-        <div className={`mega-layer ${activeMenu ? "mega-layer--open" : ""}`}>
+        {/* ========================================= */}
+        {/* DESKTOP MEGA DROPDOWN */}
+        {/* ========================================= */}
+
+        <div
+          className={`mega-layer ${
+            activeMenu
+              ? "mega-layer--open"
+              : ""
+          }`}
+        >
           {menuKeys.map((key) => (
             <section
+              key={key}
+              id={`mega-${key}`}
               aria-hidden={activeMenu !== key}
               className={`mega-menu ${
-                activeMenu === key ? "mega-menu--active" : ""
+                activeMenu === key
+                  ? "mega-menu--active"
+                  : ""
               }`}
-              id={`mega-${key}`}
-              key={key}
             >
               <div className="page-width mega-grid">
+
+                {/* DROPDOWN INTRODUCTION */}
+
                 <div className="mega-intro">
-                  <p className="kicker">{menus[key].label}</p>
-                  <h2>{menus[key].description}</h2>
+                  <p className="kicker">
+                    {menus[key].label}
+                  </p>
+
+                  <h2>
+                    {menus[key].description}
+                  </h2>
                 </div>
+
+                {/* ================================= */}
+                {/* IMPORTANT CHANGE #2 */}
+                {/* DIGITAL COLLECTIONS LINK */}
+                {/* ================================= */}
 
                 <div className="mega-links">
                   {menus[key].links.map((link) => (
                     <a
-                      href={`#${link.toLowerCase().replaceAll(" ", "-")}`}
                       key={link}
+                      href={getMenuLink(key, link)}
+                      tabIndex={
+                        activeMenu === key ? 0 : -1
+                      }
+                      onClick={(event) => {
+                        if (
+                          key === "collections" &&
+                          link === "Digital Collections"
+                        ) {
+                          event.preventDefault();
+
+                          navigate("/collections");
+                        }
+                      }}
                     >
-                      {link} <Arrow />
+                      {link}
+                      <Arrow />
                     </a>
                   ))}
                 </div>
+
+                {/* DROPDOWN FEATURED IMAGE */}
 
                 <div className="mega-feature">
                   <img
@@ -395,9 +680,19 @@ export default function App() {
                         : "/images/library-reading-room.png"
                     }
                   />
-                  <p>Open doors. Open ideas.</p>
-                  <a href="#discover">
-                    Discover more <Arrow />
+
+                  <p>
+                    Open doors. Open ideas.
+                  </p>
+
+                  <a
+                    href="#discover"
+                    tabIndex={
+                      activeMenu === key ? 0 : -1
+                    }
+                  >
+                    Discover more
+                    <Arrow />
                   </a>
                 </div>
               </div>
@@ -405,84 +700,157 @@ export default function App() {
           ))}
         </div>
 
+        {/* ========================================= */}
         {/* SEARCH PANEL */}
+        {/* ========================================= */}
+
         <section
+          id="search-panel"
           aria-hidden={!searchOpen}
           className={`search-panel ${
-            searchOpen ? "search-panel--open" : ""
+            searchOpen
+              ? "search-panel--open"
+              : ""
           }`}
-          id="search-panel"
         >
           <div className="page-width panel-search-wrap">
-            <p className="kicker">Search the library</p>
-            <form className="large-search" onSubmit={submitSearch}>
+            <p className="kicker">
+              Search the library
+            </p>
+
+            <form
+              className="large-search"
+              onSubmit={submitSearch}
+            >
               <SearchIcon />
-              <label className="sr-only" htmlFor="panel-search">
+
+              <label
+                className="sr-only"
+                htmlFor="panel-search"
+              >
                 Search library
               </label>
+
               <input
                 id="panel-search"
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search books, articles, archives, and more"
                 ref={searchRef}
-                tabIndex={searchOpen ? 0 : -1}
                 value={query}
+                onChange={(event) =>
+                  setQuery(event.target.value)
+                }
+                placeholder="Search books, articles, archives, and more"
+                tabIndex={searchOpen ? 0 : -1}
               />
-              <button tabIndex={searchOpen ? 0 : -1} type="submit">
-                Search <Arrow />
+
+              <button
+                type="submit"
+                tabIndex={searchOpen ? 0 : -1}
+              >
+                Search
+                <Arrow />
               </button>
             </form>
           </div>
         </section>
 
+        {/* ========================================= */}
         {/* MOBILE MENU */}
+        {/* ========================================= */}
+
         <section
           className={`mobile-drawer ${
-            mobileOpen ? "mobile-drawer--open" : ""
+            mobileOpen
+              ? "mobile-drawer--open"
+              : ""
           }`}
         >
-          <form className="mobile-search" onSubmit={submitSearch}>
+          <form
+            className="mobile-search"
+            onSubmit={submitSearch}
+          >
             <SearchIcon />
+
             <input
               aria-label="Search the library"
-              onChange={(event) => setQuery(event.target.value)}
+              value={query}
+              onChange={(event) =>
+                setQuery(event.target.value)
+              }
               placeholder="Search the library"
               tabIndex={mobileOpen ? 0 : -1}
-              value={query}
             />
-            <button tabIndex={mobileOpen ? 0 : -1}>Go</button>
+
+            <button
+              type="submit"
+              tabIndex={mobileOpen ? 0 : -1}
+            >
+              Go
+            </button>
           </form>
 
           {menuKeys.map((key) => (
-            <div className="mobile-section" key={key}>
+            <div
+              className="mobile-section"
+              key={key}
+            >
               <button
-                aria-expanded={mobileSection === key}
-                onClick={() =>
-                  setMobileSection((current) =>
-                    current === key ? null : key
-                  )
-                }
-                tabIndex={mobileOpen ? 0 : -1}
                 type="button"
+                aria-expanded={
+                  mobileSection === key
+                }
+                tabIndex={
+                  mobileOpen ? 0 : -1
+                }
+                onClick={() => {
+                  setMobileSection(
+                    (current) =>
+                      current === key
+                        ? null
+                        : key
+                  );
+                }}
               >
                 {menus[key].label}
-                <Chevron open={mobileSection === key} />
+
+                <Chevron
+                  open={mobileSection === key}
+                />
               </button>
 
               <div
                 className={`mobile-links ${
-                  mobileSection === key ? "mobile-links--open" : ""
+                  mobileSection === key
+                    ? "mobile-links--open"
+                    : ""
                 }`}
               >
                 <div>
-                  {/* NEW: Mobile link to Collections page */}
-                  {key === "collections" && (
-                    <a href="/collections">Digital Collection</a>
-                  )}
+
+                  {/* ============================== */}
+                  {/* IMPORTANT CHANGE #3 */}
+                  {/* MOBILE DIGITAL COLLECTIONS */}
+                  {/* ============================== */}
+
                   {menus[key].links.map((link) => (
                     <a
-                      href={`#${link.toLowerCase().replaceAll(" ", "-")}`}
                       key={link}
+                      href={getMenuLink(key, link)}
+                      tabIndex={
+                        mobileOpen &&
+                        mobileSection === key
+                          ? 0
+                          : -1
+                      }
+                      onClick={(event) => {
+                        if (
+                          key === "collections" &&
+                          link === "Digital Collections"
+                        ) {
+                          event.preventDefault();
+
+                          navigate("/collections");
+                        }
+                      }}
                     >
                       {link}
                     </a>
@@ -494,11 +862,17 @@ export default function App() {
         </section>
       </header>
 
-      {/* NAVIGATION OVERLAY */}
+      {/* ============================================= */}
+      {/* PAGE OVERLAY */}
+      {/* ============================================= */}
+
       <button
+        type="button"
         aria-label="Close navigation"
         className={`page-overlay ${
-          activeMenu || searchOpen || mobileOpen
+          activeMenu ||
+          searchOpen ||
+          mobileOpen
             ? "page-overlay--visible"
             : ""
         }`}
@@ -508,42 +882,65 @@ export default function App() {
           setMobileOpen(false);
         }}
         tabIndex={-1}
-        type="button"
       />
 
+      {/* ============================================= */}
       {/* COMING SOON DIALOG */}
+      {/* ============================================= */}
+
       {comingSoon && (
         <div
-          aria-labelledby="coming-soon-title"
+          role="dialog"
           aria-modal="true"
+          aria-labelledby="coming-soon-title"
           className="coming-soon-backdrop"
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
+            if (
+              event.target ===
+              event.currentTarget
+            ) {
               setComingSoon(null);
             }
           }}
-          role="dialog"
         >
           <div className="coming-soon-dialog">
             <button
+              type="button"
               aria-label="Close coming soon dialog"
               className="dialog-close"
-              onClick={() => setComingSoon(null)}
               ref={dialogCloseRef}
-              type="button"
+              onClick={() =>
+                setComingSoon(null)
+              }
             >
-              <span aria-hidden="true">×</span>
+              <span aria-hidden="true">
+                ×
+              </span>
             </button>
-            <p className="kicker">Digital Library</p>
-            <h2 id="coming-soon-title">Coming soon.</h2>
+
+            <p className="kicker">
+              Digital Library
+            </p>
+
+            <h2 id="coming-soon-title">
+              Coming soon.
+            </h2>
+
             <p>
-              The <strong>{comingSoon}</strong> page is being prepared.
+              The{" "}
+              <strong>
+                {comingSoon}
+              </strong>{" "}
+              page is being prepared.
               Please check back soon.
             </p>
+
             <button
-              className="dialog-action"
-              onClick={() => setComingSoon(null)}
               type="button"
+              className="dialog-action"
+              onClick={() =>
+                setComingSoon(null)
+              }
             >
               Return to the library
             </button>
@@ -551,28 +948,47 @@ export default function App() {
         </div>
       )}
 
-      {/* =====================================================
-          NEW: PAGE ROUTING
-          /collections shows the CollectionsPage component.
-          / shows your original homepage below.
-          ===================================================== */}
+      {/* ============================================= */}
+      {/* PAGE ROUTING */}
+      {/* ============================================= */}
+
       {pathname === "/collections" ? (
+
+        // =============================================
+        // DIGITAL COLLECTIONS PAGE
+        //
+        // Render src/page/CollectionPage.tsx
+        // =============================================
+
         <main id="main-content">
           <CollectionsPage navigate={navigate} />
         </main>
+
       ) : (
+
+        // =============================================
+        // ORIGINAL HOMEPAGE
+        // =============================================
+
         <main id="main-content">
-          {/* ================= HOMEPAGE ================= */}
+
+          {/* HERO SECTION */}
+
           <section className="page-width discovery">
-            <p className="kicker">01 · Access every question</p>
+            <p className="kicker">
+              01 · Access every question
+            </p>
+
             <h1>
               Knowledge . Explore
               <br />
               Possibility.
             </h1>
+
             <p className="intro">
-              Explore books, archives, digital collections, research
-              resources, and more.
+              Explore books, archives, digital
+              collections, research resources,
+              and more.
             </p>
 
             <form
@@ -580,17 +996,26 @@ export default function App() {
               onSubmit={submitSearch}
             >
               <SearchIcon />
-              <label className="sr-only" htmlFor="hero-search">
+
+              <label
+                className="sr-only"
+                htmlFor="hero-search"
+              >
                 Search library collections
               </label>
+
               <input
                 id="hero-search"
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search books, articles, archives, and more"
                 value={query}
+                onChange={(event) =>
+                  setQuery(event.target.value)
+                }
+                placeholder="Search books, articles, archives, and more"
               />
+
               <button type="submit">
-                Search <Arrow />
+                Search
+                <Arrow />
               </button>
             </form>
 
@@ -600,37 +1025,60 @@ export default function App() {
                   ? `Searching for “${result}”`
                   : "One search. Many ways to discover."}
               </span>
-              <a href="#advanced">Advanced search</a>
+
+              <a href="#advanced">
+                Advanced search
+              </a>
             </div>
 
+            {/* QUICK RESOURCES */}
+
             <div className="resource-grid">
-              {resources.map(([icon, title, copy]) => (
-                <a
-                  href={`#${title.toLowerCase().replaceAll(" ", "-")}`}
-                  key={title}
-                >
-                  <ResourceIcon type={icon} />
-                  <div>
-                    <strong>{title}</strong>
-                    <span>{copy}</span>
-                  </div>
-                  <Arrow />
-                </a>
-              ))}
+              {resources.map(
+                ([icon, title, copy]) => (
+                  <a
+                    key={title}
+                    href={
+                      title === "Digital Collections"
+                        ? "/collections"
+                        : `#${title
+                            .toLowerCase()
+                            .replaceAll(" ", "-")}`
+                    }
+                  >
+                    <ResourceIcon type={icon} />
+
+                    <div>
+                      <strong>{title}</strong>
+                      <span>{copy}</span>
+                    </div>
+
+                    <Arrow />
+                  </a>
+                )
+              )}
             </div>
           </section>
 
+          {/* ========================================= */}
           {/* FEATURED INTRODUCTION */}
+          {/* ========================================= */}
+
           <section className="page-width introduction">
-            <p className="kicker section-rule">Featured introduction</p>
+            <p className="kicker section-rule">
+              Featured introduction
+            </p>
+
             <div className="introduction-grid">
               <figure>
                 <img
                   alt="The historic university reading hall"
                   src="/images/library-reading-room.png"
                 />
+
                 <figcaption>
-                  The Reading Hall · A space to pause, question, and imagine.
+                  The Reading Hall · A space to pause,
+                  question, and imagine.
                 </figcaption>
               </figure>
 
@@ -640,62 +1088,104 @@ export default function App() {
                   <br />
                   of ideas.
                 </h2>
+
                 <p>
-                  A library is more than what it holds. It is what it
-                  makes possible.
+                  A library is more than what it
+                  holds. It is what it makes possible.
                 </p>
+
                 <p>
-                  At Alden, rare discoveries sit alongside new perspectives.
-                  Our collections, spaces, and people bring disciplines
-                  together—and help every curious mind find a way forward.
+                  At Alden, rare discoveries sit
+                  alongside new perspectives.
+                  Our collections, spaces, and people
+                  bring disciplines together—and help
+                  every curious mind find a way forward.
                 </p>
-                <a className="text-link" href="#about">
-                  Get to know your library <Arrow />
+
+                <a
+                  className="text-link"
+                  href="#about"
+                >
+                  Get to know your library
+                  <Arrow />
                 </a>
               </div>
             </div>
           </section>
 
-          {/* COLLECTIONS BAND */}
+          {/* ========================================= */}
+          {/* COLLECTIONS SECTION */}
+          {/* ========================================= */}
+
           <section className="collections-band">
             <div className="page-width">
+
               <div className="section-heading">
                 <div>
-                  <p className="kicker">From the collections</p>
-                  <h2>Unexpected connections start here.</h2>
+                  <p className="kicker">
+                    From the collections
+                  </p>
+
+                  <h2>
+                    Unexpected connections start here.
+                  </h2>
                 </div>
 
-                {/* NEW: Working link to Collections page */}
-                <a className="text-link" href="/collections">
-                  Explore all collections <Arrow />
+                <a
+                  className="text-link"
+                  href="/collections"
+                >
+                  Explore all collections
+                  <Arrow />
                 </a>
               </div>
 
               <div className="collection-grid">
                 {collectionCards.map((card) => (
                   <article key={card.title}>
-                    <img alt="" src={card.image} />
-                    <p className="kicker">{card.eyebrow}</p>
+                    <img
+                      alt=""
+                      src={card.image}
+                    />
+
+                    <p className="kicker">
+                      {card.eyebrow}
+                    </p>
+
                     <h3>
                       <a href="/collections">
-                        {card.title} <Arrow />
+                        {card.title}
+                        <Arrow />
                       </a>
                     </h3>
-                    <p>{card.copy}</p>
+
+                    <p>
+                      {card.copy}
+                    </p>
                   </article>
                 ))}
               </div>
             </div>
           </section>
 
+          {/* ========================================= */}
           {/* STUDY SECTION */}
+          {/* ========================================= */}
+
           <section className="page-width study-section">
             <div>
-              <p className="kicker">Make yourself at home</p>
-              <h2>Room for your next idea.</h2>
+              <p className="kicker">
+                Make yourself at home
+              </p>
+
+              <h2>
+                Room for your next idea.
+              </h2>
+
               <p>
-                Come to concentrate. Stay to connect. Find a space that
-                works for the way you think.
+                Come to concentrate. Stay to connect.
+                Find a space that works for the way
+                you think.
               </p>
 
               <div className="study-links">
@@ -713,11 +1203,20 @@ export default function App() {
                     "Find the right place—and the right time—to begin.",
                   ],
                 ].map(([title, copy]) => (
-                  <a href="#study" key={title}>
+                  <a
+                    href="#study"
+                    key={title}
+                  >
                     <span>
-                      <strong>{title}</strong>
-                      <small>{copy}</small>
+                      <strong>
+                        {title}
+                      </strong>
+
+                      <small>
+                        {copy}
+                      </small>
                     </span>
+
                     <Arrow />
                   </a>
                 ))}
@@ -729,39 +1228,69 @@ export default function App() {
                 alt="A quiet library study room"
                 src="/images/study-room.png"
               />
+
               <figcaption>
-                Find your focus in the Garden Reading Room.
+                Find your focus in the Garden
+                Reading Room.
               </figcaption>
             </figure>
           </section>
 
+          {/* ========================================= */}
           {/* EVENTS SECTION */}
+          {/* ========================================= */}
+
           <section className="page-width events-section">
+
             <div className="section-heading">
               <div>
-                <p className="kicker">At the library</p>
-                <h2>Ideas come to life.</h2>
+                <p className="kicker">
+                  At the library
+                </p>
+
+                <h2>
+                  Ideas come to life.
+                </h2>
               </div>
-              <a className="text-link" href="#events">
-                All events & exhibitions <Arrow />
+
+              <a
+                className="text-link"
+                href="#events"
+              >
+                All events & exhibitions
+                <Arrow />
               </a>
             </div>
 
             <div className="events-grid">
+
               <article className="exhibition">
                 <img
                   alt="An artist book in the exhibition"
                   src="/images/botanical-book.png"
                 />
+
                 <div>
-                  <p className="kicker">On view · Exhibition</p>
-                  <h3>The life of the printed page</h3>
-                  <p>
-                    From the first impression to the artist&apos;s book,
-                    explore the page as a place of possibility.
+                  <p className="kicker">
+                    On view · Exhibition
                   </p>
-                  <a className="text-link" href="#exhibition">
-                    Explore the exhibition <Arrow />
+
+                  <h3>
+                    The life of the printed page
+                  </h3>
+
+                  <p>
+                    From the first impression to
+                    the artist&apos;s book, explore
+                    the page as a place of possibility.
+                  </p>
+
+                  <a
+                    className="text-link"
+                    href="#exhibition"
+                  >
+                    Explore the exhibition
+                    <Arrow />
                   </a>
                 </div>
               </article>
@@ -789,49 +1318,98 @@ export default function App() {
                     "A clearer path through your sources",
                     "12:00–1:00 pm · Online",
                   ],
-                ].map(([month, day, type, title, detail]) => (
-                  <a href="#event" key={day}>
-                    <time>
-                      <small>{month}</small>
-                      <strong>{day}</strong>
-                    </time>
-                    <div>
-                      <p className="kicker">{type}</p>
-                      <h3>{title}</h3>
-                      <span>{detail}</span>
-                    </div>
-                    <Arrow />
-                  </a>
-                ))}
+                ].map(
+                  ([
+                    month,
+                    day,
+                    type,
+                    title,
+                    detail,
+                  ]) => (
+                    <a
+                      href="#event"
+                      key={day}
+                    >
+                      <time>
+                        <small>
+                          {month}
+                        </small>
+
+                        <strong>
+                          {day}
+                        </strong>
+                      </time>
+
+                      <div>
+                        <p className="kicker">
+                          {type}
+                        </p>
+
+                        <h3>
+                          {title}
+                        </h3>
+
+                        <span>
+                          {detail}
+                        </span>
+                      </div>
+
+                      <Arrow />
+                    </a>
+                  )
+                )}
               </div>
             </div>
           </section>
         </main>
       )}
 
-      {/* ================= FOOTER ================= */}
+      {/* ============================================= */}
+      {/* FOOTER */}
+      {/* ============================================= */}
+
       <footer className="site-footer">
+
+        {/* FOOTER CTA */}
+
         <div className="footer-cta">
           <div className="page-width footer-cta__inner">
+
             <div>
-              <h2>A good question deserves a conversation.</h2>
+              <h2>
+                A good question deserves
+                a conversation.
+              </h2>
+
               <p>
-                From your first source to your final citation, our
-                librarians are here to help.
+                From your first source to your final
+                citation, our librarians are here
+                to help.
               </p>
             </div>
+
             <div className="footer-cta__action">
               <a href="#librarian">
-                Ask a Librarian <Arrow />
+                Ask a Librarian
+                <Arrow />
               </a>
-              <span>Or schedule a research consultation</span>
+
+              <span>
+                Or schedule a research consultation
+              </span>
             </div>
           </div>
         </div>
 
+        {/* FOOTER LINKS */}
+
         <div className="footer-main">
           <div className="page-width">
+
             <div className="footer-grid">
+
+              {/* IDENTITY */}
+
               <div className="footer-identity">
                 <div className="brand brand--footer">
                   <img
@@ -841,51 +1419,121 @@ export default function App() {
                     src="/images/fulbright-seal.svg"
                     width="72"
                   />
+
                   <span className="brand-copy">
-                    <small>Fulbright University</small>
-                    <strong>Digital Library</strong>
+                    <small>
+                      Fulbright University
+                    </small>
+
+                    <strong>
+                      Digital Library
+                    </strong>
                   </span>
                 </div>
+
                 <p>
-                  Open minds. Shared knowledge. A world of possibility.
+                  Open minds. Shared knowledge.
+                  A world of possibility.
                 </p>
-                <small>© Fulbright University</small>
+
+                <small>
+                  © Fulbright University
+                </small>
               </div>
 
-              <div className="footer-column">
-                <p>Explore</p>
-                {/* NEW: Footer link opens Collections */}
-                <a href="/collections">Collections</a>
-                <a href="#visit">Visit the library</a>
-                <a href="#research-services">Research services</a>
-                <a href="#about">About the Library</a>
-              </div>
+              {/* EXPLORE */}
 
               <div className="footer-column">
-                <p>For our community</p>
-                <a href="#students">Students</a>
-                <a href="#faculty">Faculty & researchers</a>
-                <a href="#alumni">Alumni & visitors</a>
-                <a href="#support">Support the library</a>
+                <p>
+                  Explore
+                </p>
+
+                <a href="/collections">
+                  Collections
+                </a>
+
+                <a href="#visit">
+                  Visit the library
+                </a>
+
+                <a href="#research-services">
+                  Research services
+                </a>
+
+                <a href="#about">
+                  About the Library
+                </a>
               </div>
 
+              {/* COMMUNITY */}
+
               <div className="footer-column">
-                <p>Connect</p>
-                <a href="#contact">Contact us</a>
-                <a href="#librarian">Ask a Librarian</a>
-                <a href="#hours">Library hours</a>
-                <a href="#social">News & stories</a>
+                <p>
+                  For our community
+                </p>
+
+                <a href="#students">
+                  Students
+                </a>
+
+                <a href="#faculty">
+                  Faculty & researchers
+                </a>
+
+                <a href="#alumni">
+                  Alumni & visitors
+                </a>
+
+                <a href="#support">
+                  Support the library
+                </a>
+              </div>
+
+              {/* CONNECT */}
+
+              <div className="footer-column">
+                <p>
+                  Connect
+                </p>
+
+                <a href="#contact">
+                  Contact us
+                </a>
+
+                <a href="#librarian">
+                  Ask a Librarian
+                </a>
+
+                <a href="#hours">
+                  Library hours
+                </a>
+
+                <a href="#social">
+                  News & stories
+                </a>
               </div>
             </div>
 
+            {/* FOOTER BOTTOM */}
+
             <div className="footer-footnote">
               <span>
-                © 2025 Fulbright University. All rights reserved.
+                © 2025 Fulbright University.
+                All rights reserved.
               </span>
+
               <div>
-                <a href="#privacy">Privacy</a>
-                <a href="#accessibility">Accessibility</a>
-                <a href="#terms">Terms of use</a>
+                <a href="#privacy">
+                  Privacy
+                </a>
+
+                <a href="#accessibility">
+                  Accessibility
+                </a>
+
+                <a href="#terms">
+                  Terms of use
+                </a>
               </div>
             </div>
           </div>
